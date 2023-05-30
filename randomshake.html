@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<link href="http://overpass-30e2.kxcdn.com/overpass.css" rel="stylesheet" />
+		<meta charset="UTF-8" />
+		
+		<style type="text/css">
+
+* {
+	font-family: Overpass, sans-serif;
+	color: #fff;
+}
+
+body {
+	overflow-y: scroll;
+	margin: 0;
+	padding: 0;
+	z-index: -1;
+}
+
+#content {
+	position: relative;
+	
+	text-align: center;
+	
+	width: 100vw;
+	height: 100vh;
+	
+	margin: 0 auto;
+	padding: 20px;
+
+	background: linear-gradient(to right, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)),
+				url("http://i.imgur.com/BoloeNc.gif");
+	background-size: cover;
+}
+
+#content-inner {
+	position: absolute;
+	width: 100%;
+}
+
+input {
+	margin-bottom: 10px;
+}
+
+input[type="text"], input[type="number"] {
+	outline: 0;
+	border: none;
+	border-bottom: 2px solid #fff;
+	text-align: center;
+	font-size: 16px;
+	background: none;
+	transition: box-shadow .5s ease;
+}
+
+input[type="number"] {
+	width: 70px;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+	box-shadow: 0 5px 5px -2px rgba(255, 255, 255, .5);
+}
+
+input[type="button"] {
+	background-color: rgba(0, 0, 0, .4);
+	border: none;
+	transition: background-color .5s ease;
+}
+
+input[type="button"]:hover {
+	background-color: rgba(0, 0, 0, .7);
+}
+
+input[disabled] {
+	opacity: .3;
+}
+
+#image {
+	width: 500px;
+}
+
+/*#code-full, #code-full * {
+	font-family: monospace;
+}
+
+#code-full {
+	margin-top: 20px;
+}*/
+
+		</style>
+	</head>
+	<body>
+		<div id="content">
+			<div id="content-inner">
+				<h1>Random Shake</h1>
+			
+				<form id="type">
+					<input type="radio" name="type" value="onclick" id="onclick" checked /><label>On click</label>
+					<input type="radio" name="type" value="interval" id="interval" /><label>By interval</label><br /><br />
+				</form>
+				
+				<form id="form">
+					<input type="button" value="Open in new window" id="opennewwin" /><br />
+					<label>Moves </label><input type="number" min="1" value="4" id="moves" /><br />
+					<label>XMin </label><input type="number" value="-5" id="xmin" />
+					<label>XMax </label><input type="number" value="5" id="xmax" /><br />
+					<label>YMin </label><input type="number" value="-5" id="ymin" />
+					<label>YMax </label><input type="number" value="5" id="ymax" /><br />
+					<label>Blur </label><input type="number" min="0" value="0" id="blur" /><br />
+					<label>Turn </label><input type="number" min="0" value="0" step=".1" id="turn" /><br />
+					<label>Offset </label><input type="number" min="0" value="650" id="offset" disabled /><br />
+					<label>Delay </label><input type="number" min="0" value="100" placeholder="100" id="delay" /><br />
+					<label>Space </label><input type="number" min="0" value="1300" id="space" disabled /><br />
+					<input type="checkbox" id="smoothness" /><label> Smooth</label><br />
+					<input type="checkbox" id="moveinner" checked /><label> Shake content</label><br />
+					<input type="checkbox" title="Requires new window" id="moveouter" /><label title="Requires new window"> Shake window</label><br />
+					<label>Image </label><input type="text" min="1" value="http://tny.im/" id="image" disabled /><br />
+					<input type="button" value="Start" id="start" />
+				</form>
+			
+				<img src="" id="img" alt="Image" />
+			
+				<!--<div id="code-full">
+					@keyframes shake { <div id="code"></div> }
+				</div>-->
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+
+var content = document.querySelector("#content"),
+	content1 = document.querySelector("#content-inner"),
+	code = document.querySelector("#code"),
+	typeForm = document.querySelector("#type"),
+	inputs = {
+		"opennewwin": document.querySelector("#opennewwin"),
+		"moves": document.querySelector("#moves"),
+		"xmin": document.querySelector("#xmin"),
+		"xmax": document.querySelector("#xmax"),
+		"ymin": document.querySelector("#ymin"),
+		"ymax": document.querySelector("#ymax"),
+		"blur": document.querySelector("#blur"),
+		"turn": document.querySelector("#turn"),
+		"offset": document.querySelector("#offset"),
+		"delay": document.querySelector("#delay"),
+		"space": document.querySelector("#space"),
+		"smoothness": document.querySelector("#smoothness"),
+		"moveinner": document.querySelector("#moveinner"),
+		"moveouter": document.querySelector("#moveouter"),
+		"image": document.querySelector("#image")
+	},
+	start = document.querySelector("#start"),
+	img = document.querySelector("#img"),
+	delay;
+
+function randint(min, max) {
+	return Math.floor((max - min) * Math.random()) + min;
+}
+
+function changeMargins() {
+	setTimeout(function () {
+		cLeft = randint(xMin, xMax);
+		cTop = randint(yMin, yMax);
+		
+		cBlur = randint(0, Number(inputs["blur"].value));
+		cTurn = Math.random() * Number(inputs["turn"].value) * 2 - Number(inputs["turn"].value);
+		
+		if (inputs["moveinner"].checked) {
+			content.style.left = (cLeft / 2) + "px";
+			content.style.top = (cTop / 2) + "px";
+			
+			content1.style.left = (cLeft / 2) + "px";
+			content1.style.top = (cTop / 2) + "px";
+		}
+	
+		if (inputs["moveouter"].checked) moveTo(newWinCoords[0] + cLeft, newWinCoords[1] + cTop);
+		
+		content.style.filter = "blur(" + cBlur + "px)";
+		content.style.transform = "rotate(" + cTurn + "deg)";
+		
+		/*aniStr = "% { top: " + cTop + "; left: " + cLeft + "; }<br />";
+		
+		code.innerHTML += (i * (100 / (moves + 1))) + aniStr;
+		
+		if (!smoothness) code.innerHTML += ((i + 1) * (100 / (moves + 1)) - 1) + aniStr;*/
+		
+		i++;
+		
+		if (i < moves + 1) { changeMargins(); }
+		else {
+			if (inputs["moveinner"].checked) {
+				content.style.top = "0";
+				content.style.left = "0";
+			
+				content1.style.left = "0";
+				content1.style.top = "0";
+			}
+			
+			if (inputs["moveouter"].checked) moveTo(newWinCoords[0], newWinCoords[1]);
+			
+			content.style.filter = "blur(0px)";
+			content.style.transform = "rotate(0deg)";
+			//code.innerHTML += "100% { top: 0; left: 0; }<br />";
+		}
+	}, delay);
+}
+
+var moves, smoothness,
+	i, //aniStr,
+	cTop, cLeft,
+	cBlur, cTurn,
+	min, max;
+function shake() {
+	moves = Number(inputs["moves"].value);
+	smoothness = inputs["smoothness"].checked;
+	xMin = Number(inputs["xmin"].value);
+	xMax = Number(inputs["xmax"].value);
+	yMin = Number(inputs["ymin"].value);
+	yMax = Number(inputs["ymax"].value);
+	
+	delay = inputs["delay"].value;
+	
+	//code.innerHTML = "";
+
+	newWinCoords = [screenX, screenY];
+	
+	if (smoothness) content.style.transition = "top " + delay + "ms linear, left " + delay + "ms linear";
+	else content.style.transition = "";
+	
+	i = 0;
+
+	changeMargins();
+}
+
+start.onclick = shake;
+
+var interval,// interval1,
+	newWin, newWinCoords;
+type.onchange = function () {
+	if (document.querySelector("#onclick").checked) {
+		start.onclick = shake;
+		inputs["offset"].disabled = true;
+		inputs["space"].disabled = true;
+		inputs["image"].disabled = true;
+		clearInterval(interval);
+		//clearInterval(interval1);
+		img.src = "";
+	} else {
+		start.onclick = function () {
+			reloadImage();
+			clearInterval(interval);
+						
+			img.onload = function (e) {
+				/*clearInterval(interval1);
+				interval1 = setInterval(function () {
+					reloadImage();
+				}, Number(inputs["space"].value));*/
+				
+				setTimeout(function () {
+					shake();
+					interval = setInterval(function () {
+						shake();
+					}, Number(inputs["space"].value));
+				}, Number(inputs["offset"].value));
+			}
+		};
+		inputs["offset"].disabled = false;
+		inputs["space"].disabled = false;
+		inputs["image"].disabled = false;
+	}
+};
+function reloadImage() {
+	img.src = "";
+	img.src = inputs["image"].value;
+}
+
+inputs["opennewwin"].onclick = function () {
+	newWin = open("#", "_blank", "width=900,height=800,top=50,left=50");
+	location = "about:blank";
+};
+
+content.scrollHeight = Math.max(content.scrollHeight + 40, document.body.scrollHeight);
+
+shake();
+
+		</script>
+	</body>
+</html>

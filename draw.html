@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+        
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link href="draw.css" rel="stylesheet" />
+  </head>
+
+  <body>
+
+    <div class="app">
+      <div class="canvas-container container">
+        <canvas></canvas>
+      </div>
+
+      <div class="settings-container container">
+        <div class="settings-tabs">
+          <ul>
+            <li>
+              <button class="button-closemenu" title="Close settings menu">
+                <svg width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="20" y1="20" x2="55" y2="55" stroke-width="5" />
+                  <line x1="55" y1="20" x2="20" y2="55" stroke-width="5" />
+                </svg>
+              </button>
+            </li>
+          </ul>
+
+          <h2>Tools</h2>
+          
+          <ul>
+            <li>
+              <button class="button-editbrush" title="Edit brush">
+                <svg width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m31, 43c-11.5, 22.9 -7.8, 24.8 -7.9, 24.8c-0.5, -0.3 3.2, 2 14.9, -21.5c11.7, -23.4 12.5, -15.7 5, -19.6c-7.5, -3.9 -0.5, -6.6 -12, 16.3z" stroke-width="3" fill="none" />
+                  <path d="m44.6, 25c4.4, 1.9 6.1, 1.8 9.2, -6.3c3.1, -8 3.4, -6.3 -2.3, -9.6c-5.8, -3.3 -4, -4.2 -8.5, 4.5c-4.5, 8.7 -2.8, 9.5 1.6, 11.4z" stroke-width="3" fill="none" />
+                  <line stroke-dasharray="4, 3, 2, 2, 1, 1" x1="42" x2="50" y1="23" y2="8" stroke-width="1" />
+                  <line stroke-dasharray="2, 2" x1="46" x2="50" y1="25" y2="17" stroke-width="1" />
+                </svg>
+              </button>
+            </li>
+          </ul>
+
+          <h2>Controls</h2>
+
+          <ul>
+            <li>
+              <button class="button-undo" title="Undo">
+                <svg width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m36, 9c15, -1 35, 8 33, 28c-2, 20 -54, 37 -44, 32c9, -4.8 22, -15 23, -23c1, -8 -5, -13 -12, -13" stroke-width="3" fill="none" />
+                  <line x1="37" x2="6" y1="5" y2="22" stroke-width="3" />
+                  <line x1="37" x2="6" y1="37" y2="22" stroke-width="3" />
+                  <line x1="37" x2="36" y1="5" y2="9" stroke-width="3" />
+                  <line x1="37" x2="36" y1="37" y2="33" stroke-width="3" />
+                </svg>
+              </button>
+            </li>
+            
+            <li>
+              <button class="button-redo" title="Redo">
+                <svg width="75" height="75" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke="#000" fill="none" stroke-width="3" d="m39, 9c-15, -1 -35, 8 -33, 28c2, 20 54, 37 44, 32c-9, -4.8 -22, -15 -23, -23c-1, -8 5, -13 12, -13" stroke-width="3" fill="none" />
+                  <line x1="38" x2="69" y1="5" y2="22" stroke-width="3" />
+                  <line x1="38" x2="69" y1="37" y2="22" stroke-width="3" />
+                  <line x1="38" x2="39" y1="5" y2="9" stroke-width="3" />
+                  <line x1="38" x2="39" y1="37" y2="33" stroke-width="3" />
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="settings">
+          <div class="settings-brushshape">
+            <h2>Shape</h2>
+            <div class="brushshapecontainer">
+              <svg class="settings-selection" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                <line x2="12" />
+                <line y2="12" />
+                <line x1="30" x2="18" />
+                <line y1="30" y2="18" />
+                <line x2="12" y1="30" y2="30" />
+                <line x1="30" x2="30" y2="12" />
+                <line x1="30" x2="18" y2="30" y1="30" />
+                <line x1="30" x2="30" y2="18" y1="30" />
+              </svg>
+
+              <svg class="settings-svgradio" name="square" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="20" height="20" />
+              </svg>
+
+              <svg class="settings-svgradio" name="circle" width="20" height="20" xmlns="http://www.w3.org/2000/svg" data-selected>
+                <circle cx="10" cy="10" r="10" />
+              </svg>
+            </div>
+          </div>
+
+          <br />
+          
+          <div class="settings-brushcomposition">
+            <h2>Composite operation</h2>
+            <div class="brushcompositioncontainer">
+              <div class="brushcompositionscroller">
+                <ul></ul>
+              </div>
+            </div>
+          </div>
+          
+          <br />
+
+          <div class="settings-brushdiameter">
+            <h2>Diameter</h2>
+            <div class="brushinputcontainer">
+              <input class="brushinput brushdiameter" type="number" value="4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="lib/0.1.js"></script>
+    <script lang="javascript" type="text/javascript" src="draw.js"></script>
+  </body>
+
+</html>

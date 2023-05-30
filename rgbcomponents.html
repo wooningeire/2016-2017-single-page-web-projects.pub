@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title></title>
+		<meta charset="UTF-8" />
+		<link href="http://overpass-30e2.kxcdn.com/overpass.css" rel="stylesheet" />
+		<style type="text/css">
+
+* {
+	font-family: Overpass;
+}
+
+body {
+	margin: 0;
+}
+
+canvas {
+	height: auto;
+}
+
+.clear {
+	clear: both;
+}
+
+#content {
+	width: 100%;
+	display: flex;
+	align-items: stretch;
+}
+
+#original {
+	max-width: 100%;
+}
+
+#orig-wrap, #result-wrap {
+	padding: 20px;
+}
+
+#orig-wrap {
+	width: 400px;
+	margin: 10px;
+	
+	text-align: center;
+	border: 2px rgba(0, 0, 0, .7);
+	border-right: solid;
+}
+
+#orig-wrap > * {
+	padding: 10px;
+	margin: 10px;
+	width: 100%;
+}
+
+#rgb-wrap {
+	margin-bottom: 20px;
+}
+
+/*canvas {
+	box-shadow: 0 0 10px 2px rgba(0, 0, 0, .3);
+}*/
+
+		</style>
+	</head>
+	<body>
+		<div id="content">
+			<div id="orig-wrap">
+				<div id="input-wrap">
+					<input id="upload" type="file" accept="image/*" />
+				</div>
+		
+				<div id="oimg-wrap">
+					<canvas id="original"></canvas>
+				</div>
+			</div>
+		
+			<div id="result-wrap">
+				<div id="rgb-wrap">
+					<div class="label">Red-Green-Blue</div>
+					<canvas id="r" class="result primary"></canvas>
+					<canvas id="g" class="result primary"></canvas>
+					<canvas id="b" class="result primary"></canvas>
+				</div>
+				<!--<div id="cmy-wrap">
+					<div class="label">Cyan-Magenta-Yellow</div>
+					<canvas id="c" class="result secondary"></canvas>
+					<canvas id="m" class="result secondary"></canvas>
+					<canvas id="y" class="result secondary"></canvas>
+				</div>-->
+			</div>
+		</div>
+		
+		<script lang="javascript" type="text/javascript">
+
+var upload = document.querySelector("#upload");
+var img = new Image();
+
+var pCanvases = nodeListToArray(document.querySelectorAll("canvas.primary"));
+var sCanvases = nodeListToArray(document.querySelectorAll("canvas.secondary"));
+var o = document.querySelector("#original");
+var contexts = [];
+
+var canvases = pCanvases.concat(sCanvases);
+for (var i in canvases) {
+	contexts.push(canvases[i].getContext("2d"));
+}
+var oCtx = o.getContext("2d");
+
+upload.onchange = function () {
+	var reader = new FileReader();
+	
+	reader.onload = function (e) {
+		img.src = e.target.result;
+		
+    img.onload = function () {
+      o.width = img.width;
+      o.height = img.height;
+      for (var i = 0, c; i < canvases.length; i++) {
+        c = canvases[i];						
+        c.width = img.width;
+        c.height = img.height;
+		
+        c.style.width = Math.min(img.width, (document.querySelector("html").scrollWidth - 450) / 4) + "px";
+      }
+
+      oCtx.drawImage(img, 0, 0);
+		
+      splitRGB();
+    }
+	};
+		
+	reader.readAsDataURL(upload.files[0]);
+}
+
+function splitRGB() {
+	var imgData, pxs;
+	
+	for (var j = 0, component; j < contexts.length; j++) {
+		imgData = oCtx.getImageData(0, 0, o.width, o.height);
+		pxs = imgData.data;
+		
+		for (var i = 0, colors; i < pxs.length; i += 4) {
+			colors = [
+				pxs[i],
+				pxs[i + 1],
+				pxs[i + 2],
+			];
+		
+			pxs[i]     = 0;
+			pxs[i + 1] = 0;
+			pxs[i + 2] = 0;
+		
+			pxs[i + j] = colors[j];
+			if (!(j in pCanvases)) pxs[(i + j + 1) % 3] = colors[j];
+		}
+	
+		contexts[j].putImageData(imgData, 0, 0);
+	}
+}
+function nodeListToArray(nodeList) {
+	return [].slice.call(nodeList);
+}
+
+		</script>
+	</body>
+</html>

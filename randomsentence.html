@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Random Sentence</title>
+		<meta charset="UTF-8" />
+		<link href="http://overpass-30e2.kxcdn.com/overpass.css" rel="stylesheet" />
+		<style type="text/css">
+
+* {
+	font-family: Overpass;
+	color: #fff;
+}
+
+body {
+	margin: 0;
+	width: 93.78vw;
+}
+
+#header {
+	width: 100%;
+	padding: 40px;
+	background: #fff;
+}
+
+h1 {
+	font-size: 48px;
+	font-weight: 200;
+	color: #666;
+	text-align: center;
+}
+
+h1, textarea {
+	text-transform: uppercase;
+}
+
+#body {
+	width: 100%;
+	font-weight: 500;
+	padding: 40px;
+	background: #888;
+}
+
+#body * {
+	font-size: 20px;
+}
+
+textarea {
+	width: 600px;
+	height: 500px;
+	margin: auto;
+	display: block;
+	text-align: center;
+	outline: 0;
+	background: #aaa;
+}
+
+		</style>
+	</head>
+	<body>
+		<div id="header">
+			<h1>Random Sentence</h1>
+		</div>
+		<div id="body">
+			<textarea id="sentence" placeholder="Sentence..."></textarea>
+		</div>
+		
+		<script src="functions.js"></script>
+		<script lang="javascript" type="text/javascript">
+
+var words = {
+	nouns: ["chicken", "nugget", "person", "dog", "wood", "hippopotamus", "Pinocchio", "world"],
+	verbs: ["runs", "is", "goes", "makes", "eats", "swims", "dunks", "flies"],
+	pronouns: ["it"],
+	adverbs: ["happily", "weirdly", "around", "loudly"],
+	adjectives: ["costly", "sharp", "intelligent", "loud", "idiotic", "abstract"],
+	articles: ["a", "the"],
+	prepositions: ["to", "from", "near", "around"],
+};
+var punctuation = {
+	ending: [".", "?", "!"]
+}
+
+var partsOfSpeech = ["nouns", "verbs", "pronouns", "adverbs", "adjectives", "articles", "prepositions"];
+function createSentence() {
+	var sentence = "";
+	var currentPOS = choose(["articles", "pronouns"]), previousPOS;
+	var word;
+	
+	while (true) {
+		word = choose(words[currentPOS]);
+		/*if (word == "a" && (["a", "e", "i", "o", "u"])) {
+		
+		}*/
+		
+		sentence += " " + word;
+		
+		previousPOS = currentPOS;
+		
+		if (
+		(currentPOS == "verbs" ||
+		(currentPOS == "nouns" && previousPOS == "prepositions") ||
+		(currentPOS == "pronouns" && previousPOS == "prepositions"))
+		&& choose([true, false])
+		) {
+			sentence += choose(punctuation["ending"]);
+			break;
+		}
+		
+		
+		     if     (currentPOS == "articles") currentPOS = choose(["nouns", "adjectives"]);
+		else if   (currentPOS == "adjectives") currentPOS = choose(["nouns", "adjectives"]);
+		else if        (currentPOS == "nouns"
+			 ||      currentPOS == "pronouns") currentPOS = choose([/*"adverbs", */"verbs"]);
+		else if      (currentPOS == "adverbs") currentPOS = choose(["verbs", /*"adverbs", */"adjectives"]);
+		else if        (currentPOS == "verbs") currentPOS = choose([/*"adverbs", */"prepositions", "articles", "pronouns"]);
+		else if (currentPOS == "prepositions") currentPOS = choose(["nouns", "pronouns"]);
+		
+		if (currentPOS == "adjectives" && previousPOS == "adjectives") sentence += ",";
+	}
+	
+	document.querySelector("#sentence").innerHTML = sentence;
+}
+
+function getPOS() {
+	if (typeof currentPOS == "number") currentPOS = partsOfSpeech[curentPOS];
+}
+
+onload = createSentence;
+
+		</script>
+	</body>
+</html>

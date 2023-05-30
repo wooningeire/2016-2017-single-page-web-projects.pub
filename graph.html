@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title></title>
+		<meta charset="UTF-8" />
+		<link href="http://overpass-30e2.kxcdn.com/overpass.css" rel="stylesheet" />
+		<style type="text/css">
+
+* {
+	font-family: Overpass;
+	color: #fff;
+	font-size: 18px;
+}
+
+body {
+	background: #333;
+	
+	margin: 0;
+	padding: 20px;
+}
+
+#inputs {
+	text-align: center;
+}
+
+.input-row {
+	margin-bottom: 10px;
+}
+
+.input-row > div {
+	display: inline-block;
+}
+
+.input-row > div:first-child {
+	cursor: normal;
+}
+
+input, [contenteditable] {
+	text-align: center;
+	background: none;
+	border: 2px #fff;
+	border-bottom: solid;
+	border-radius: 10px 10px 2px 2px;
+	outline: 0;
+	transition: box-shadow 1s ease,
+				background .5s ease;
+}
+
+[contenteditable] {
+	border-style: none solid solid solid;
+	border-radius: 2px;
+	resize: none;
+	width: 300px;
+	min-height: 186px;
+}
+
+input:focus, [contenteditable]:focus {
+	background: rgba(255, 255, 255, .2);
+	box-shadow: 0 8px 8px -5px rgba(255, 255, 255, .6);
+}
+
+button {
+	background: rgba(255, 255, 255, .1);
+	border: none;
+	transition: background .5s ease;
+	border-radius: 2px;
+	outline: 0;
+}
+
+button:hover, button:active {
+	background: rgba(255, 255, 255, .2);
+}
+
+button:hover:active {
+	background: rgba(255, 255, 255, .4);
+}
+
+#graph-wrap {
+	width: 100%;
+	text-align: center;
+}
+
+canvas {
+	border: 4px solid #fff;
+	border-radius: 3px;
+	margin: 50px;
+	display: inline-block;
+	text-align: center;
+}
+
+::selection {
+	background: rgba(255, 255, 255, .2);
+}
+
+		</style>
+	</head>
+	<body>
+		<header></header>
+	
+		<div id="inputs">
+			<div class="input-row">
+				<div>X label<br />
+					<input id="x-label" type="text" />
+				</div>
+			
+				<div>Y label<br />
+					<input id="y-label" type="text" />
+				</div>
+			</div>
+			
+			<div class="input-row">
+				<div>X data<br />
+					<div contenteditable id="x-data" ></div>
+				</div>
+				
+				<div>Y data<br />
+					<div contenteditable id="y-data" ></div>
+				</div>
+			</div>
+			
+			<button id="draw">Draw</button>
+		</div>
+		
+		<div id="graph-wrap">
+			<canvas id="graph">HTML5 is required for this tool to function.</canvas>
+		</div>
+		
+		<script src="functions.js"></script>
+		<script lang="javascript" type="text/javascript">
+
+var c = document.querySelector("canvas");
+var cx = c.getContext("2d");
+
+c.width = 600;
+c.height = 375;
+
+var font = {
+	size: "16px",
+	family: "Overpass, sans-serif"
+};
+document.querySelector("#draw").onclick = draw;
+
+function draw() {
+	cx.fillStyle = "#fff";
+	cx.fillRect(0, 0, c.width, c.height);
+
+	cx.fillStyle = "#000";
+	cx.font = font["size"] + " " + font["family"];
+	cx.textAlign = "center";
+	
+	cx.fillText(document.querySelector("#x-label").value, c.width / 2, c.height - 15);
+	cx.rotate(degToRad(90));
+	cx.fillText(document.querySelector("#y-label").value, c.width / 2, c.height - 15);
+}
+
+		</script>
+	</body>
+</html>

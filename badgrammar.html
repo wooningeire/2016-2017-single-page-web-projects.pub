@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Sentence to Trash</title>
+		<meta charset="UTF-8" />
+		<link href="http://overpass-30e2.kxcdn.com/overpass.css" rel="stylesheet" />
+		<style type="text/css">
+
+* {
+	font-family: Overpass;
+	color: #666;
+	font-size: 24px;
+}
+
+body {
+	background: linear-gradient(
+		to right,
+		#fff,
+		#ddd
+	);
+}
+
+body {
+	margin: 0;
+	font-size: 16px;
+}
+
+header {
+	text-align: center;
+	padding: 20px;
+}
+
+h1 {
+	color: #666;
+	margin: 0;
+	text-transform: uppercase;
+	font-size: 48px;
+	font-weight: 200;
+}
+
+#main {
+	background: rgba(0, 0, 0, .1);
+	min-height: 80vh;
+	width: 84%;
+	margin: 0 5%;
+	padding: 3%;
+	font-weight: 500;
+	text-align: center;
+	border-radius: 16px;
+}
+
+input, textarea {
+	background: none;
+	text-align: center;
+	outline: none;
+	transition: box-shadow 1s ease,
+				background .5s ease;
+}
+
+input {
+	border: 2px #666;
+	border-bottom: solid;
+	border-radius: 10px 10px 2px 2px;
+}
+
+textarea {
+	background: rgba(0, 0, 0, .1);
+	color: rgba(255, 255, 255, .7);
+	border: none;
+	text-shadow: 2px 2px 1px rgba(0, 0, 0, .3);
+	max-width: 49%;
+	width:400px;
+	height: 250px;
+	resize: none;
+	border-radius: 8px;
+	text-align: justify;
+    text-align-last: center;
+}
+
+.label {
+	font-size: 16px;
+}
+
+input:hover {
+	background: rgba(0, 0, 0, .05);
+}
+
+textarea:focus {
+	box-shadow: 0 8px 8px -5px rgba(0, 0, 0, .05);
+}
+
+input:focus {
+	background: rgba(0, 0, 0, .1);
+	box-shadow: 0 8px 8px -5px rgba(0, 0, 0, .2);
+}
+
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>Sentence to Trash</h1>
+		</header>
+		
+		<section id="main">
+			<div id="form">
+				<textarea id="input" placeholder="Sentence..."></textarea>
+				<textarea id="output" placeholder="Output"></textarea>
+				<br />
+			
+				<div id="settings">
+					<span class="label">Iterations</span> <input id="iterations" type="number" value="1" min="1" />
+				</div>
+			</div>
+		</section>
+		
+		<script src="functions.js"></script>
+		<script lang="javascript" type="text/javascript">
+
+var input = document.querySelector("#input"),
+	output = document.querySelector("#output");
+
+var keyboard = "`1234567890-=\qwertyuiop[]asdfghjkl;'zxcvbnm,./";
+
+document.querySelector("#form").oninput = function () { toTrash() };
+
+function toTrash(placeholder, sentence) {
+	if (!sentence) var sentence = input.value;
+	//var words = sentence.split(" ");
+	
+	var letter;
+	for (var j = 0; j < Number(document.querySelector("#iterations").value); j++) {
+		for (var i = 0; i < sentence.length; i++) {
+			letter = sentence[i];
+		
+			if (i > 0) {
+				if (!randint(0, 15)) {
+					sentence = replaceInStr(sentence, i, sentence[i - 1]);
+					sentence = replaceInStr(sentence, i - 1, letter);
+				}
+			}
+			
+			if (!randint(0, 15)) sentence = replaceInStr(sentence, i, letter + letter);
+			if (!randint(0, 3)) sentence = replaceInStr(sentence, i, switchCase(sentence[i]));
+		
+			if (!randint(0, 15)) {
+				var key = keyboard[keyboard.indexOf(letter.toLowerCase()) + randint(-1, 1)];
+				if (key) sentence = replaceInStr(sentence, i, key);
+			}
+		}
+	}
+	
+	if (placeholder) {
+		output.setAttribute("placeholder", sentence);
+		return;
+	}
+	output.innerHTML = sentence;
+}
+
+toTrash(true, "Output");
+
+		</script>
+	</body>
+</html>

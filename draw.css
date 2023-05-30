@@ -1,0 +1,206 @@
+* {
+  font-family: Montserrat, Calibri, sans-serif;
+  outline: 0;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.app {
+  width: 100vw;
+}
+
+.container {
+  height: 100vh;
+}
+
+.canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.settings-container {
+  position: absolute;
+  top: 0;
+  right: -300px;
+  width: 375px;
+  z-index: 2;
+  transition: right 1s ease, box-shadow 1s ease;
+}
+
+.settings-container > * {
+  height: 100vh;
+  background: #aaa;
+  position: absolute;
+  
+  overflow-y: auto;
+}
+
+.settings-container ul {
+  padding: 0;
+  margin: 0;
+  
+  list-style: none;
+}
+
+.settings-tabs {
+  left: 0;
+}
+
+.settings-tabs ul {
+  transition: margin 1s ease;
+}
+
+.settings-tabs ul:nth-child(1) {
+  margin-top: -75px;
+}
+
+.settings-tabs li,
+.settings-tabs li > button {
+  height: 75px;
+  margin: 0;
+}
+
+.settings-tabs li {
+  background: rgba(255, 255, 255, .15);
+}
+
+.settings-tabs li:nth-child(even) {
+  background: rgba(255, 255, 255, .3);
+}
+
+.settings-tabs button:hover,
+.settings-tabs button:active {
+  background: rgba(255, 255, 255, .4);
+}
+
+.settings-tabs button:hover:active {
+  background: rgba(255, 255, 255, .6);
+}
+
+.settings-tabs button[disabled],
+.settings-tabs button[disabled]:hover:active {
+  background: #ddd;
+  opacity: .6;
+}
+
+.settings-tabs h2 {
+  font-size: 12px;
+  text-align: center;
+  color: rgba(0, 0, 0, .3);
+  text-transform: uppercase;
+}
+
+.settings-tabs svg {
+  opacity: .4;
+}
+
+.settings {
+  width: 300px;
+  left: 75px;
+  background: #fff;
+}
+
+.settings * {
+  font-size: 15px;
+  text-align: center;
+  color: rgba(0, 0, 0, .7);
+}
+
+.settings > * {
+  width: 100%;
+}
+
+.settings > *:first-child {
+  margin-top: 50px;
+}
+
+.settings > *:last-child {
+  margin-bottom: 50px;
+}
+
+.settings h2 {
+  font-size: 18px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, .5);
+}
+
+.settings-svgradio {
+  margin: 0 8px;
+  cursor: pointer;
+  opacity: .4;
+  transition: opacity .2s ease;
+}
+
+.settings-svgradio:hover,
+.settings-svgradio:active {
+  opacity: .5;
+}
+
+.settings-svgradio:hover:active {
+  opacity: .6;
+}
+
+.settings-svgradio[data-selected] {
+  opacity: 1;
+}
+
+.settings-selection {
+  position: absolute;
+  
+  transition: margin .3s ease;
+  z-index: 3;
+}
+
+.brushshapecontainer > .settings-selection {
+  margin: -5px 0 0 43px;
+}
+
+.brushcompositionscroller {
+  width: 240px;
+  height: 130px;
+  max-height: 780px;
+  margin: 0 auto;
+  
+  overflow-y: auto;
+  resize: vertical;
+}
+
+.brushcompositionscroller li {
+  height: 30px;
+  line-height: 30px;
+  
+  text-align: center;
+  background: rgba(0, 0, 0, .05);
+}
+
+.brushcompositionscroller li:nth-child(even) {
+  background: rgba(0, 0, 0, .1);
+}
+
+.brushinput {
+  border: none;
+  border-bottom: 2px solid #000;
+  
+  text-align: center;
+}
+
+button {
+  margin: 0;
+  border: none;
+  padding: 0;
+  
+  background: none;
+  transition: background .5s ease;
+}
+
+canvas {
+  box-shadow: 0 0 10px rgba(0, 0, 0, .6);
+  background: #fff/*url("transparent.png")*/;
+  cursor: crosshair;
+}

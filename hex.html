@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>char from hex code</title>
+		<meta charset="UTF-8" />
+	</head>
+	<body>
+		<input id="input" type="text" /><br />
+		<textarea id="output" style="margin-top: 14px;"></textarea>
+		
+		<script lang="javascript" type="text/javascript">
+
+document.querySelector("#input").oninput = function () {
+	document.querySelector("#output").innerHTML = "&#x" + document.querySelector("#input").value + ";";
+};
+
+		</script>
+	</body>
+</html>

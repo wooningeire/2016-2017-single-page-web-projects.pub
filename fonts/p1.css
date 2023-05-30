@@ -1,0 +1,10 @@
+/* 400 */
+
+@font-face {
+    font-family: "p1";
+    src: url("p1.woff2") format("woff2"),
+         url("p1.woff") format("woff"),
+         url("p1.ttf")  format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}

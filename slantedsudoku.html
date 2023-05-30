@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Slanted Sudoku Solver</title>
+		
+		<style type="text/css">
+
+* {
+	font-weight: normal;
+}
+
+body {
+	padding: 3%;
+	
+	font-family: Arial;
+	background-color: #ccc;
+}
+
+#guide {
+	position: relative;
+}
+
+div {
+	position: absolute;
+	top: 115px;
+	left: 156px;
+	
+	width: 479px;
+	height: 479px;
+}
+
+div select {
+	position: absolute;
+	
+	width: 24px;
+	height: 16px;
+	font-size: 16px;
+}
+
+		</style>
+		
+		<script type="text/javascript">
+var primes = [
+	"02", "03", "05", "07", "11",
+	"13", "17", "19", "23", "29",
+	"31", "37", "41", "43", "47",
+	"53", "59", "61", "67", "71",
+	"73", "79", "83", "89", "97"
+];
+
+var inputs;
+function init() {
+	var div = document.querySelector("div");
+	
+	var coords = [
+		["20", "100"], ["30", "180"], ["70", "210"],
+		["100", "20"], ["100", "100"], ["110", "190"],
+		["180", "30"], ["210", "75"], ["190", "110"], ["180", "180"]
+	];
+
+	for (var i = 0; i < 40; i++) {
+		div.innerHTML += "<select id=\"b" + i + "\">";
+		
+		for (var j = 0; j <= 9; i++) {
+			div.innerHTML += "<option value=\"" + i + "\">" + i + "</option>";
+		}
+		
+		div.innerHTML += "</select>";
+	}
+}
+
+onload = init;
+		</script>
+	</head>
+	<body>
+		<img src="slantsudokuguide.png" alt="Guide" id="guide" />
+		
+		<div>
+		</div>
+	</body>
+</html>

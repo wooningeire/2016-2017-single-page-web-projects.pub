@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en"> <!-- ￼ -->
+    <head>
+        <title></title>
+        <meta charset="UTF-8" />
+        <link href="./fonts/p1.css" rel="stylesheet" />
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+        <style type="text/css">
+
+* {
+    font-family: p1;
+    font-size: 16px;
+}
+        </style>
+    </head>
+    <body>
+        <p id="b0"></p>
+        <p id="b1"></p>
+        <p id="b2"></p>
+        
+        <p>Hey look this is my font at 16px</p>
+        <p style="font-family: Arial;">Hey look this is Arial at 16px too</p>
+        
+        <input value="Begrgfbs" style="width: 50%;" />
+        <input value="72px p1" id="font" style="width: 20%;" />
+        <input value="#000" id="fill" style="width: 20%;" />
+        
+        <canvas width="1000" height="500"></canvas>
+        
+        <script src="functions.js"></script>
+        <script lang="javascript" type="text/javascript">
+
+            var exs = [
+                document.querySelector("#b0"),
+                document.querySelector("#b1"),
+                document.querySelector("#b2")
+            ];
+            for (var i = 65; i <= 90; i++) { exs[0].innerHTML += "&#" + i + ";&#" + (i + 32) + ";"; }
+            exs[0].innerHTML += " ";
+            for (var i = 48; i <= 57; i++) { exs[0].innerHTML += "&#" + i + ";"; }
+            
+            for (var i = 33; i <= 47; i++) { exs[1].innerHTML += "&#" + i + ";"; }
+            for (var i = 58; i <= 64; i++) { exs[1].innerHTML += "&#" + i + ";"; }
+            for (var i = 123; i <= 126; i++) { exs[1].innerHTML += "&#" + i + ";"; }
+            
+            for (var i = 161; i <= 255 /*382*/; i++) { exs[2].innerHTML += "&#" + i + ";"; }
+
+            var c = document.querySelector("canvas");
+            var ctx = c.getContext("2d");
+            
+            c.width = Math.round(document.body.scrollWidth / 2) * 2;
+            c.height = document.body.scrollHeight / 2;
+            
+            var t = document.querySelector("input");
+            t.oninput = function () {
+              ctx.clearRect(0, 0, c.width, c.height);
+              ctx.font = document.querySelector("#font").value;
+              ctx.fillStyle = document.querySelector("#fill").value;
+              ctx.fillText(t.value, 40, c.height - 30);
+            };
+            
+        </script>
+    </body>
+</html>
